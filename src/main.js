@@ -1,5 +1,4 @@
 import { createApp } from 'vue'
-import './style.css'
 import App from './App.vue'
 import Home from './components/Home.vue'
 import Profile from './components/Profile.vue'

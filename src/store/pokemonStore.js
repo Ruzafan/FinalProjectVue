@@ -8,12 +8,14 @@ import {ref} from 'vue'
 
 // Define your store
 const baseUrl = "http://localhost:3000";
+
 export const usePokemonStore = defineStore("pokemon", () => {
   const pokemons = ref([]);
-  const sortBy = ref(null);
-  const searchTerm = ref(null);
+  const sortBy = ref('name');
+  const searchTerm = ref('');
   const capturedOnly = ref(false);
-  const orderBy = ref(null);
+  const orderBy = ref('asc');
+
   const getPokemon = async (id) => {
     const store = useStore();
     let config = {
@@ -26,11 +28,11 @@ export const usePokemonStore = defineStore("pokemon", () => {
       if (response.status !== 200) {
         return null;
       }
-      return response.data.data;
+      return new Pokemon(response.data.data);
     } catch (err) {
       console.log(err);
     }
-  };
+  }
 
   const getListPokemon = async () => {
     const store = useStore();
@@ -44,46 +46,100 @@ export const usePokemonStore = defineStore("pokemon", () => {
       if (response.status !== 200) {
         return null;
       }
-      return response.data.data;
+      let pokemonList = response.data.data
+      let result = []
+      for(let i= 0;i<pokemonList.length;i++)
+      {
+        result.push(new Pokemon(pokemonList[i]))
+      }
+      return result
     } catch (err) {
       console.log(err);
     }
-  };
+  }
+
+  const removePokemon = async (id) => {
+    const store = useStore();
+    const config = {
+      headers: {
+        authorization: store.getToken(),
+      },
+      data: { "id": id }
+    };
+    try {
+      const response = await axios.delete(baseUrl + "/pokemon", config);
+      if (response.status !== 200) {
+        return null;
+      }
+      getListPokemonFiltered()
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   const getListPokemonFiltered = async () => {
     let result = await getListPokemon();
-    if (capturedOnly.value) {
-      result = result.filter((pokemon) => pokemon.captured);
-    }
-    if (searchTerm.value) {
-      result = result.filter((pokemon) =>
-        pokemon.title.toLowerCase().includes(searchTerm.value.toLowerCase())
-      );
-    }
-    result.sort((a, b) => {
-      if (a[sortBy.value.toLowerCase()] < b[sortBy.value.toLowerCase()]) {
-        return -1;
-      } else if (
-        a[sortBy.value.toLowerCase()] > b[sortBy.value.toLowerCase()]
-      ) {
-        return 1;
+    if(result){
+      if (capturedOnly.value) {
+        result = result.filter((pokemon) => pokemon.captured);
       }
-      return 0;
-    });
-
-    if (orderBy.value === "desc") {
-      result.reverse();
+      if (searchTerm.value) {
+        result = result.filter((pokemon) =>
+          pokemon.name.toLowerCase().includes(searchTerm.value.toLowerCase())
+        );
+      }
+      result.sort((a, b) => {
+        if (a[sortBy.value.toLowerCase()] < b[sortBy.value.toLowerCase()]) {
+          return -1;
+        } else if (
+          a[sortBy.value.toLowerCase()] > b[sortBy.value.toLowerCase()]
+        ) {
+          return 1;
+        }
+        return 0;
+      });
+  
+      if (orderBy.value === "desc") {
+        result.reverse();
+      }
     }
     pokemons.value = result;
   };
+  
+  const setSortBy = (sortFilter) => {
+    if(sortFilter)
+    {
+      sortBy.value = sortFilter
+      getListPokemonFiltered()
+    }
+  }
 
+  const setSearchTerm = (searchTermFilter) => {
+      searchTerm.value = searchTermFilter
+      getListPokemonFiltered()
+  }
+
+  const setCapturedOnly = (capturedOnlyFilter) => {
+    capturedOnly.value = capturedOnlyFilter
+    getListPokemonFiltered()
+  }
+
+  const setOrderBy = (orderByFilter) => {
+    if(orderByFilter)
+    {
+      orderBy.value = orderByFilter
+      getListPokemonFiltered()
+    }
+  }
+  
   return {
     pokemons,
     getPokemon,
     getListPokemonFiltered,
-    sortBy,
-    searchTerm,
-    capturedOnly,
-    orderBy,
+    setOrderBy,
+    setSearchTerm,
+    setCapturedOnly,
+    setSortBy,
+    removePokemon
   };
 });

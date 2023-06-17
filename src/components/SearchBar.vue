@@ -1,16 +1,17 @@
 <script setup>
 import { defineEmits } from 'vue'
 import { useStore } from '../store/user';
-
+import { usePokemonStore } from '../store/pokemonStore'
 const emit = defineEmits(['search', 'show-form'])
 const store = useStore()
 const isLogged = !!store.getToken()
+const pokemonStore = usePokemonStore()
 </script>
 
 <template>
     <div class="search-bar">
-        <input type="text" placeholder="Search pokemon" @input="$emit('search', $event.target.value)">
-        <button class="clear" @click="$emit('search', '')">Clear</button>
+        <input type="text" placeholder="Search pokemon" @input="pokemonStore.setSearchTerm($event.target.value)">
+        <button class="clear" @click="pokemonStore.setSearchTerm('')">Clear</button>
         <button class="add" @click="$emit('show-form')" v-if="isLogged">Add pokemon</button>
     </div>
 </template>

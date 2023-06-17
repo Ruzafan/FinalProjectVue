@@ -56,7 +56,7 @@ var submitForm = async () => {
 }
 
 
-.login-form .login-form__form-group {
+.login-form .form__form-group {
     margin-bottom: 20px;
     width: 50%;
     display: flex;
@@ -80,7 +80,7 @@ var submitForm = async () => {
     text-align: left;
 }
 
-.login-form .login-form__form-group input:focus{
+.login-form .form__form-group input:focus{
     border-color: #000;
 }
 

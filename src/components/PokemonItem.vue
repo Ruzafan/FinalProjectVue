@@ -3,10 +3,12 @@ import { Pokemon } from "../models/pokemon.js"
 import { defineProps, ref } from 'vue';
 import {useRouter} from 'vue-router'
 import { useStore } from '../store/user'
+import { usePokemonStore } from '../store/pokemonStore'
 
   const props = defineProps({pokemon: Pokemon})
   const router = useRouter()
   const store = useStore()
+  const pokemonStore = usePokemonStore()
   const gotoDetail = (id) => {
     if(store.getToken())
     {
@@ -14,12 +16,18 @@ import { useStore } from '../store/user'
     }
   }
   var isLogged = ref(!!store.getToken())
+  const deletePokemon = async (event,id) => {
+    event.preventDefault()
+    event.stopPropagation()
+    
+    await pokemonStore.removePokemon(id)
+  }
 </script>
 
 <template>
     
     <div :class="['pokemon', { 'pointer': isLogged }, { 'captured': pokemon.captured } ]" @click="gotoDetail(pokemon.id)">
-      <button class="delete-pokemon pokemon-item__delete" @click="$emit('delete-pokemon',pokemon.id)">
+      <button class="delete-pokemon pokemon-item__delete" @click="deletePokemon($event,pokemon.id)" v-if="isLogged">
             <img src="../assets/delete-button.svg" alt="Delete pokemon" />
         </button>  
       <div class="pokemon__image">

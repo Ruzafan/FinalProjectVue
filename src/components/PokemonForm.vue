@@ -4,7 +4,7 @@ import FormNumberItem from "./FormItems/FormNumberItem.vue"
 import FormTextAreaItem from "./FormItems/FormTextAreaItem.vue"
 import FormCheckBoxItem from "./FormItems/FormCheckBoxItem.vue"
 import FormSelectItem from "./FormItems/FormSelectItem.vue"
-import { defineEmits, reactive } from 'vue'
+import { defineEmits, reactive , ref} from 'vue'
 import { Pokemon } from "../models/pokemon"
 import axios from "axios";
 import { useStore } from '../store/user';
@@ -56,11 +56,11 @@ var typesValues = reactive([{
     Value: "Poison",
 },]);
 const store = useStore()
-var displayError = reactive(false);
+var displayError = ref(false);
 const emit = defineEmits(['add-pokemon'])
 var submitForm = () => {
     if (form.name && form.description && abilities && type1) {
-        displayError = false;
+        displayError.value = false;
         form.abilities = abilities ? abilities.split(',').map((g) => g.trim()) : ""
         form.types = !!type2 ? [type1, type2] : [type1]
 
@@ -80,7 +80,7 @@ var submitForm = () => {
             })
             .catch(err => console.log(err));
     } else {
-        displayError = true;
+        displayError.value = true;
     }
 }
 </script>

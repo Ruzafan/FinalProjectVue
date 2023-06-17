@@ -1,15 +1,16 @@
 <script setup>
-import { defineEmits,defineProps } from 'vue';
-const emit = defineEmits(['sort-items','order-items','favourite-items'])
+import { defineProps } from 'vue';
+import { usePokemonStore } from '../store/pokemonStore'
 const props = defineProps({
     isLogged: Boolean 
 })
+const pokemonStore = usePokemonStore()
 </script>
 <template>
     <div class="filter-bar">
         <div class="filter-bar__select">
             <label for="sort-select">Sort by:</label>
-            <select id="sort-select" @change="$emit('sort-items',$event.target.value)">
+            <select id="sort-select" @change="pokemonStore.setSortBy($event.target.value)">
                 <option value="name">Name</option>
                 <option value="height">Height</option>
                 <option value="weight">Weight</option>
@@ -18,7 +19,7 @@ const props = defineProps({
         </div>
         <div class="filter-bar__select">
             <label for="order-select">Order:</label>
-            <select id="order-select" @change="$emit('order-items',$event.target.value)">
+            <select id="order-select"  @change="pokemonStore.setOrderBy($event.target.value)">
                 <option value="asc">Ascending</option>
                 <option value="desc">Descending</option>
             </select>
@@ -26,7 +27,7 @@ const props = defineProps({
         <div class="filter-bar__check" v-show="props.isLogged">
             <label for="captured-checkbox">Captured:</label>
             <input type="checkbox" id="captured-checkbox"
-                @change="$emit('only-captured', $event.target.checked)">
+                @change="pokemonStore.setCapturedOnly($event.target.checked)">
         </div>
     </div>
 </template>
