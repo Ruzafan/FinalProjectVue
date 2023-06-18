@@ -7,15 +7,12 @@ import PokemonList from './PokemonList.vue'
 import ModalLayer from './ModalLayer.vue'
 import PokemonForm from './PokemonForm.vue';
 import { usePokemonStore } from '../store/pokemonStore'
+import { useGlobalStore } from '../store/globalStore'
 
 const isLogged = ref(false);
 const store = useStore();
-const showModal = ref(false);
 const pokemonStore = usePokemonStore()
-
-const toggleForm = () => {
-  showModal.value = !showModal.value;
-};
+const globalStore = useGlobalStore()
 
 onMounted(() => {
   isLogged.value = !!store.getToken();
@@ -27,18 +24,18 @@ onMounted(() => {
 <template>
   <div>
     <div class="content">
-      <SearchBar @show-form="toggleForm"></SearchBar>
+      <SearchBar @show-form="globalStore.toogleShowModal()"></SearchBar>
       <FilterBar :isLogged="isLogged">
       </FilterBar>
       <main class="main">
         <PokemonList :pokemons="pokemonStore.pokemons"></PokemonList>
       </main>
-      <ModalLayer v-show="showModal" @close-modal="toggleForm">
+      <ModalLayer v-show="globalStore.showModal">
       <template v-slot:header>
         <h2>Add Pokemon</h2>
       </template>
       <template v-slot:body>
-        <PokemonForm @close-modal="()=>{toggleForm; GetPokemonList;}"/>
+        <PokemonForm @close-modal="()=>{ GetPokemonList;}"/>
       </template>
     </ModalLayer>
     </div>

@@ -77,6 +77,16 @@ export const usePokemonStore = defineStore("pokemon", () => {
     }
   }
 
+  const addPokemon = async (pokemon) => {
+    const store = useStore();
+
+    const config = {
+      headers: {
+          authorization: store.getToken()
+      }
+  };
+    return await axios.post("http://localhost:3000/pokemon", form, config)
+  }
   const getListPokemonFiltered = async () => {
     let result = await getListPokemon();
     if(result){
@@ -140,6 +150,7 @@ export const usePokemonStore = defineStore("pokemon", () => {
     setSearchTerm,
     setCapturedOnly,
     setSortBy,
-    removePokemon
+    removePokemon,
+    addPokemon
   };
 });

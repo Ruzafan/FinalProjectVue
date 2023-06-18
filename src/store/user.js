@@ -8,7 +8,9 @@ export const useStore = defineStore("user", {
     }),
   actions:{
     setUserData(name, token){
+      localStorage.setItem("name", name);
       this.name = name
+      localStorage.setItem("token", token);
       this.token = token
       this.logged = this.name && this.token
     },
@@ -16,10 +18,23 @@ export const useStore = defineStore("user", {
       return state.logged
     },
     getName(){
-      return this.name
+      if(this.name)
+      {
+        return this.name
+      }else if(localStorage.getItem("name"))
+      {
+        return localStorage.getItem("name")
+      }
     },
     getToken(){
-      return this.token
+      if(this.token)
+      {
+        return this.token
+      }else if(localStorage.getItem("token"))
+      {
+        return localStorage.getItem("token")
+      }
+      
     }
   }
 });

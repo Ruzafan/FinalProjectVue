@@ -3,24 +3,24 @@ import { defineEmits, ref } from 'vue'
 import axios from "axios";
 import { useStore } from '../store/user'
 import FormTextItem from './FormItems/FormTextItem.vue'
-var email = ref("");
-var pwd = ref("");
+var email = "";
+var pwd = "";
 var displayError = ref(false)
 const emit = defineEmits(['login'])
 var submitForm = async () => {
     if (email && pwd) {
         displayError.value = false;
         let login = {
-        "email": email.value,
-        "password": pwd.value
+        "email": email,
+        "password": pwd
       }
         let response = await axios.post("http://localhost:3000/login", login)
         if(!response.data.error)
         {
             let store = useStore()
             store.setUserData(response.data.data.name,response.data.data.tokenId)
-            email.value = ""
-            pwd.value = ""
+            email = ""
+            pwd = ""
             emit('login')
         }else{
             displayError.value = true;

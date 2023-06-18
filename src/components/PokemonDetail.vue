@@ -11,6 +11,7 @@ const store = usePokemonStore()
 const route = useRoute()
 const pokemon = ref(null);
 onMounted(async()=> {
+  debugger;
   pokemon.value = await store.getPokemon(route.params.id)
   if(!pokemon.value)
   {
