@@ -25,7 +25,7 @@ export const usePokemonStore = defineStore("pokemon", () => {
     };
     try {
       const response = await axios.get(baseUrl + "/pokemon?id=" + id, config);
-      if (response.status !== 200) {
+      if (response.data.status !== 200) {
         return null;
       }
       return new Pokemon(response.data.data);
