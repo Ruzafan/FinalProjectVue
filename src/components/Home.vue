@@ -25,7 +25,7 @@ onMounted(() => {
   <div>
     <div class="content">
       <SearchBar @show-form="globalStore.toogleShowModal()"></SearchBar>
-      <FilterBar :isLogged="isLogged">
+      <FilterBar>
       </FilterBar>
       <main class="main">
         <PokemonList :pokemons="pokemonStore.pokemons"></PokemonList>

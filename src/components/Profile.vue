@@ -5,7 +5,6 @@ import axios from 'axios';
 import {ref} from 'vue'
 let store = useStore()
 let token = store.getToken()
-console.log("token profile page"+token)
 if(!token) {
     const router = useRouter()
     router.replace({path: '/'})

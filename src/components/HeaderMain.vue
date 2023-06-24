@@ -11,10 +11,9 @@ import Login from './Login.vue'
       <router-link to="/">
         <h1 class="title">Pokedex</h1>
       </router-link>
-
     </div>
     <div class="header__right">
-      <Login @showLogin="$emit('showLogin')"></Login>
+      <Login></Login>
     </div>
   </header>
 </template>

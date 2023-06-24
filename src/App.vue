@@ -1,30 +1,19 @@
 <script setup>
-import {ref} from 'vue'
 import HeaderMain from './components/HeaderMain.vue'
 import LoginForm from './components/LoginForm.vue'
 import MiniModalLayer from './components/MiniModalLayer.vue'
 import {useRouter} from 'vue-router'
+import { useGlobalStore } from './store/globalStore'
 
-const showModal = ref(false);
+const globalstore = useGlobalStore();
 const router = useRouter();
-
-
-const login = () => {
-  toggleForm();
-  router.push('/profile');
-};
-
-const toggleForm = () => {
-  showModal.value = !showModal.value;
-};
-
 </script>
 
 <template>
-  <HeaderMain @showLogin="toggleForm"></HeaderMain>
+  <HeaderMain ></HeaderMain>
   <div>
     <router-view></router-view>
-    <MiniModalLayer v-show="showModal" @close-modal="toggleForm">
+    <MiniModalLayer v-show="globalstore.showLoginModal">
       <template v-slot:header>
         <h2>Login</h2>
       </template>

@@ -1,10 +1,15 @@
+<script setup>
+import { useGlobalStore } from '../store/globalStore';
+
+const globalStore = useGlobalStore()
+</script>
 <template>
     <div class="mini_modal">
         <div class="mini_modal__overlay"></div>
         <div class="mini_modal__content">
             <div class="mini_modal__header">
                 <slot name="header"></slot>
-                <button class="mini_modal__close" @click="$emit('close-modal')">
+                <button class="mini_modal__close" @click="globalStore.toogleShowLoginModal">
                     <img src="../assets/close-button.svg" alt="Close">
                 </button>
             </div>

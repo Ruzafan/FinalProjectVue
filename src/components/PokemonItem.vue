@@ -15,7 +15,6 @@ import { usePokemonStore } from '../store/pokemonStore'
         router.replace({path:"/pokemon/"+id})
     }
   }
-  var isLogged = ref(!!store.getToken())
   const deletePokemon = async (event,id) => {
     event.preventDefault()
     event.stopPropagation()
@@ -26,8 +25,8 @@ import { usePokemonStore } from '../store/pokemonStore'
 
 <template>
     
-    <div :class="['pokemon', { 'pointer': isLogged }, { 'captured': pokemon.captured } ]" @click="gotoDetail(pokemon.id)">
-      <button class="delete-pokemon pokemon-item__delete" @click="deletePokemon($event,pokemon.id)" v-if="isLogged">
+    <div :class="['pokemon', { 'pointer': store.isLogged() }, { 'captured': pokemon.captured } ]" @click="gotoDetail(pokemon.id)">
+      <button class="delete-pokemon pokemon-item__delete" @click="deletePokemon($event,pokemon.id)" v-if="store.getToken()">
             <img src="../assets/delete-button.svg" alt="Delete pokemon" />
         </button>  
       <div class="pokemon__image">

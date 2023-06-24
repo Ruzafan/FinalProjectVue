@@ -15,7 +15,7 @@ export const useStore = defineStore("user", {
       this.logged = this.name && this.token
     },
     isLogged(){
-      return state.logged
+      return this.logged
     },
     getName(){
       if(this.name)

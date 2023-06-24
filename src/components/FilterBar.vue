@@ -1,9 +1,9 @@
 <script setup>
-import { defineProps } from 'vue';
 import { usePokemonStore } from '../store/pokemonStore'
-const props = defineProps({
-    isLogged: Boolean 
-})
+import { useStore } from '../store/user';
+
+const userStore = useStore()
+
 const pokemonStore = usePokemonStore()
 </script>
 <template>
@@ -24,7 +24,7 @@ const pokemonStore = usePokemonStore()
                 <option value="desc">Descending</option>
             </select>
         </div>
-        <div class="filter-bar__check" v-show="props.isLogged">
+        <div class="filter-bar__check" v-show="userStore.isLogged()">
             <label for="captured-checkbox">Captured:</label>
             <input type="checkbox" id="captured-checkbox"
                 @change="pokemonStore.setCapturedOnly($event.target.checked)">

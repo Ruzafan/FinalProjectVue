@@ -1,12 +1,16 @@
 <script setup>
-import { defineEmits, ref } from 'vue'
+import { ref } from 'vue'
 import axios from "axios";
 import { useStore } from '../store/user'
 import FormTextItem from './FormItems/FormTextItem.vue'
+import FormPasswordItem from './FormItems/FormPasswordItem.vue'
+import { useGlobalStore } from '../store/globalStore';
+import {useRouter} from "vue-router"
 var email = "";
 var pwd = "";
 var displayError = ref(false)
-const emit = defineEmits(['login'])
+const globalStore = useGlobalStore()
+const router = useRouter()
 var submitForm = async () => {
     if (email && pwd) {
         displayError.value = false;
@@ -21,7 +25,8 @@ var submitForm = async () => {
             store.setUserData(response.data.data.name,response.data.data.tokenId)
             email = ""
             pwd = ""
-            emit('login')
+            globalStore.toogleShowLoginModal()
+            router.push('/profile');
         }else{
             displayError.value = true;
         }
@@ -36,7 +41,7 @@ var submitForm = async () => {
         <form class="login-form__form" @submit.prevent="submitForm">
 
             <FormTextItem v-model="email" fieldName="Email" /> 
-            <FormTextItem v-model="pwd" fieldName="Password" />
+            <FormPasswordItem v-model="pwd" fieldName="Password" />
 
             <div v-if=displayError>
                 <span>An error has ocurred</span>

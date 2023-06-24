@@ -1,10 +1,12 @@
 <script setup>
-import { defineEmits, computed } from 'vue'
+import { computed } from 'vue'
 import { useStore } from '../store/user';
+import { usePokemonStore } from '../store/pokemonStore';
+import { useGlobalStore } from '../store/globalStore';
 
-const emit = defineEmits(['showLogin'])
 const store = useStore();
-
+const pokemonStore = usePokemonStore()
+const globalStore = useGlobalStore()
 const hasToken = computed(() => {
 
     let token = store.getToken()
@@ -15,6 +17,7 @@ const name = computed(() => {
 })
 const logout = () => {
     store.setUserData("", "")
+    pokemonStore.getListPokemonFiltered()
 }
 </script>
 
@@ -22,7 +25,7 @@ const logout = () => {
     <router-link to="/profile">
         <span v-if="hasToken">{{ name }}</span>
     </router-link>
-    <button v-if="!hasToken" class="login-button" @click="$emit('showLogin')">Login</button>
+    <button v-if="!hasToken" class="login-button" @click="globalStore.toogleShowLoginModal">Login</button>
     <button v-if="hasToken" class="logout-button" @click="logout">Logout</button>
 </template>
 
