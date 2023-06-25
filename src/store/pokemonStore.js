@@ -85,7 +85,7 @@ export const usePokemonStore = defineStore("pokemon", () => {
           authorization: store.getToken()
       }
   };
-    return await axios.post("http://localhost:3000/pokemon", form, config)
+    return await axios.post("http://localhost:3000/pokemon", pokemon, config)
   }
   const getListPokemonFiltered = async () => {
     let result = await getListPokemon();
@@ -98,6 +98,7 @@ export const usePokemonStore = defineStore("pokemon", () => {
           pokemon.name.toLowerCase().includes(searchTerm.value.toLowerCase())
         );
       }
+      debugger;
       result.sort((a, b) => {
         if (a[sortBy.value.toLowerCase()] < b[sortBy.value.toLowerCase()]) {
           return -1;

@@ -1,15 +1,25 @@
 <script setup>
 import { useStore } from '../store/user';
 import { usePokemonStore } from '../store/pokemonStore'
+import { useGlobalStore } from '../store/globalStore';
+import { ref} from 'vue'
 const store = useStore()
 const pokemonStore = usePokemonStore()
+const globalStore = useGlobalStore()
+var searchTrem = ref("")
+pokemonStore.setSearchTerm(searchTrem.value)
+
+const changeSearchTerm = (term) => {
+  pokemonStore.setSearchTerm(term)
+  searchTrem.value = term
+}
 </script>
 
 <template>
     <div class="search-bar">
-        <input type="text" placeholder="Search pokemon" @input="pokemonStore.setSearchTerm($event.target.value)">
-        <button class="clear" @click="pokemonStore.setSearchTerm('')">Clear</button>
-        <button class="add" v-if="store.isLogged()">Add pokemon</button>
+        <input type="text" placeholder="Search pokemon" @input="changeSearchTerm($event.target.value)" :value="searchTrem">
+        <button class="clear" @click="changeSearchTerm('')">Clear</button>
+        <button class="add" v-if="store.isLogged()"  @click="globalStore.toogleShowModal()">Add pokemon</button>
     </div>
 </template>
   

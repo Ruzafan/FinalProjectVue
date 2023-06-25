@@ -6,8 +6,8 @@ import FormTextItem from './FormItems/FormTextItem.vue'
 import FormPasswordItem from './FormItems/FormPasswordItem.vue'
 import { useGlobalStore } from '../store/globalStore';
 import {useRouter} from "vue-router"
-var email = "";
-var pwd = "";
+var email = ref("");
+var pwd = ref("");
 var displayError = ref(false)
 const globalStore = useGlobalStore()
 const router = useRouter()
@@ -15,8 +15,8 @@ var submitForm = async () => {
     if (email && pwd) {
         displayError.value = false;
         let login = {
-        "email": email,
-        "password": pwd
+        "email": email.value,
+        "password": pwd.value
       }
         let response = await axios.post("http://localhost:3000/login", login)
         if(!response.data.error)

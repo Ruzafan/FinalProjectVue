@@ -2,11 +2,9 @@
 import HeaderMain from './components/HeaderMain.vue'
 import LoginForm from './components/LoginForm.vue'
 import MiniModalLayer from './components/MiniModalLayer.vue'
-import {useRouter} from 'vue-router'
 import { useGlobalStore } from './store/globalStore'
 
 const globalstore = useGlobalStore();
-const router = useRouter();
 </script>
 
 <template>
@@ -18,7 +16,7 @@ const router = useRouter();
         <h2>Login</h2>
       </template>
       <template v-slot:body>
-        <LoginForm @login="login"></LoginForm>
+        <LoginForm></LoginForm>
       </template>
     </MiniModalLayer>
   </div>

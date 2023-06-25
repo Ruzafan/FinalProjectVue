@@ -7,11 +7,6 @@ import { useGlobalStore } from '../store/globalStore';
 const store = useStore();
 const pokemonStore = usePokemonStore()
 const globalStore = useGlobalStore()
-const hasToken = computed(() => {
-
-    let token = store.getToken()
-    return !!token
-})
 const name = computed(() => {
     return store.getName()
 })
@@ -23,10 +18,10 @@ const logout = () => {
 
 <template>
     <router-link to="/profile">
-        <span v-if="hasToken">{{ name }}</span>
+        <span v-if="store.getToken()">{{ name }}</span>
     </router-link>
-    <button v-if="!hasToken" class="login-button" @click="globalStore.toogleShowLoginModal">Login</button>
-    <button v-if="hasToken" class="logout-button" @click="logout">Logout</button>
+    <button v-if="!store.getToken()" class="login-button" @click="globalStore.toogleShowLoginModal">Login</button>
+    <button v-if="store.getToken()" class="logout-button" @click="logout">Logout</button>
 </template>
 
 <style scoped>

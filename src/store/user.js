@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 
 export const useStore = defineStore("user", {
   state: () => ({
-      logged: false,
       name: "",
       token: "",
     }),
@@ -15,7 +14,7 @@ export const useStore = defineStore("user", {
       this.logged = this.name && this.token
     },
     isLogged(){
-      return this.logged
+      return !!this.token
     },
     getName(){
       if(this.name)
